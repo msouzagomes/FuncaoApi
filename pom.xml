@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.calcred.api</groupId>
-    <artifactId>ccred-api</artifactId>
+    <artifactId>ccred-api-funcao</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -57,13 +57,11 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
-            <version>2.3.5.RELEASE</version>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
-            <version>2.3.3</version>
         </dependency>
 
         <!-- jackson / Timestamp -->

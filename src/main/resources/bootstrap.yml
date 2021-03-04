@@ -1,6 +1,6 @@
 ### GENERAL ###
 server:
-  servlet.context-path: /api/ccred-api
+  servlet.context-path: /api/funcao
   compression.enabled: true
   error.include-message: always
 ### MONITORING ###
