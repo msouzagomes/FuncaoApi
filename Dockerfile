@@ -1,5 +1,5 @@
-FROM azul/zulu-openjdk-alpine:14
-MAINTAINER Alan Santo <alan.santo@terceiros.calcard.com.br>
+FROM azul/zulu-openjdk-alpine:14.0.2
+LABEL MAINTAINER Equipe DevOps devops@calcard.com.br
 
 # Add the service itself
 ADD target/ccred-api-*.jar /usr/share/api/app.jar
