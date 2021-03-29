@@ -1,7 +1,7 @@
-@Library('pipeline-common') _
+@Library('pipeline-common-calcred') _
 
 mavenPipeline {
-    rancherStackName = 'ccred-api'
+    rancherStackName = 'ccred-calcred'
     profile = 'artifactory'
     patternRule = /develop|master|.*release\/.*/
 }
