@@ -45,8 +45,8 @@ resilience4j.retry:
 
 api:
   egress:
-    host: ${API_CCRED-API_EGRESS_HOST:https://hml-pierlabs.calcard.com.br}
-    consumer-key: ${API_CCRED-API_EGRESS_CONSUMER_KEY:123456}
+    host: ${API_FUNCAO-API_EGRESS_HOST:https://hml-pierlabs.calcard.com.br}
+    consumer-key: ${API_FUNCAO-API_EGRESS_CONSUMER_KEY:123456}
   autbank:
     consumer-key: Basic c3VwZXJ2aXNvcjpzdXBlcnZpc29y
     abovws:

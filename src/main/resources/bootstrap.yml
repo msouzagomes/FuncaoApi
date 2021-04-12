@@ -17,14 +17,14 @@ management:
       export.prometheus.enabled: true
     endpoint.prometheus.enabled: true
 spring:
-  application.name: ccred-api-api
+  application.name: funcao-api
   cloud.config.fail-fast: true
   main.web-application-type: SERVLET
   jackson:
     serialization.WRITE_DATES_AS_TIMESTAMPS: false
     deserialization.fail-on-unknown-properties: false
     default-property-inclusion: NON_ABSENT
-  profiles.default: local
+  profile.default: local
 ### LOCALE ###
   mvc:
     locale: pt_BR
