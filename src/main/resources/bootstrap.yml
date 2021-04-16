@@ -14,9 +14,9 @@ management:
       show-details: always
     metrics:
       enabled: true
-      export.prometheus.enabled: true
-    endpoint.prometheus.enabled: true
 spring:
+  profiles:
+    active: local
   application.name: funcao-api
   cloud.config.fail-fast: true
   main.web-application-type: SERVLET
@@ -24,8 +24,7 @@ spring:
     serialization.WRITE_DATES_AS_TIMESTAMPS: false
     deserialization.fail-on-unknown-properties: false
     default-property-inclusion: NON_ABSENT
-  profile.default: local
-### LOCALE ###
+  ### LOCALE ###
   mvc:
     locale: pt_BR
     localeResolver: fixed
@@ -54,8 +53,10 @@ spring:
   cloud.config.enabled: false
 ---
 spring:
-  cloud.config.uri: http://config-server.x-config:8888
   profiles:
     - dev
     - qa
     - prd
+  cloud:
+    config:
+      uri: http://config-server-calcred.x-config:8888
