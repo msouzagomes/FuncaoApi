@@ -1,6 +1,6 @@
 @Library(['pipeline-maven', 'utils']) _
 
-pipeline {
+CalsystemPipeline {
     rancherStackName = 'ccred-calcard'
     profile = 'artifactory'
     patternRule = /develop|master|.*release\/.*/
