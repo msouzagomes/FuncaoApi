@@ -1,20 +1,19 @@
 package br.com.calcred.api.config;
 
-import br.com.calcred.api.integration.account.AccountIntegrationFactory;
+import static java.time.format.DateTimeFormatter.ISO_DATE;
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Locale;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.format.Formatter;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Locale;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
-import static java.time.format.DateTimeFormatter.*;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @EnableFeignClients(basePackages = {"br.com.calcred.api.integration"})
 @Configuration
@@ -34,13 +33,6 @@ public class AppConfig {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setValidationMessageSource(messageSource);
         return bean;
-    }
-
-    @Bean
-    FactoryBean serviceLocatorFactory() {
-        ServiceLocatorFactoryBean serviceFactoryBean = new ServiceLocatorFactoryBean();
-        serviceFactoryBean.setServiceLocatorInterface(AccountIntegrationFactory.class);
-        return serviceFactoryBean;
     }
 
     @Bean
