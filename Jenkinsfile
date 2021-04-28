@@ -1,7 +1,8 @@
-@Library('pipeline-common-calcred') _
+@Library(['pipeline-maven', 'utils']) _
 
-mavenPipeline {
-    rancherStackName = 'ccred-calcred'
+pipeline {
+    rancherStackName = 'ccred-calcard'
     profile = 'artifactory'
     patternRule = /develop|master|.*release\/.*/
+    EMPRESA = "CALCRED"
 }
