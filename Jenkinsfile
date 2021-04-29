@@ -2,7 +2,7 @@
 
 CalsystemPipeline {
     PROJECT_TECH = 'maven'
-    rancherStackName = 'ccred-calcard'
+    rancherStackName = 'ccred-calcred'
     profile = 'artifactory'
     patternRule = /develop|master|.*release\/.*/
     EMPRESA = "CALCRED"
