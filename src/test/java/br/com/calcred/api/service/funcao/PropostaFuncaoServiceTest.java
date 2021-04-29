@@ -1,7 +1,7 @@
 package br.com.calcred.api.service.funcao;
 
 import static br.com.calcred.api.utils.RandomUtils.aleatorio;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import br.com.caelum.stella.format.CPFFormatter;
 import br.com.calcred.api.dto.funcao.proposta.ConsultarPropostasResponse;
 import br.com.calcred.api.dto.funcao.proposta.OrdenacaoConsultaPropostas;
 import br.com.calcred.api.dto.funcao.proposta.Proposta;
@@ -42,7 +43,7 @@ public class PropostaFuncaoServiceTest {
     @Test
     public void consultar_propostas_ok() {
 
-        String cpf = randomAlphabetic(10);
+        String cpf = randomNumeric(11);
         Integer pagina = nextInt();
         Integer quantidade = nextInt();
         OrdenacaoConsultaPropostas ordenacao = aleatorio(OrdenacaoConsultaPropostas.values());
@@ -64,7 +65,7 @@ public class PropostaFuncaoServiceTest {
         assertEquals(actual.getOrdenacao().getCampoOrdenacao(), ordenacao.getValor().getCampoOrdenacao());
         assertEquals(actual.getPaginacao().getNumeroPagina(), pagina);
         assertEquals(actual.getPaginacao().getQuantidade(), quantidade);
-        assertEquals(actual.getPesquisa().getCpf(), cpf);
+        assertEquals(actual.getPesquisa().getCpf(), new CPFFormatter().format(cpf));
 
         responseDTO.getPropostas().getPropostas().forEach(expected -> {
 
