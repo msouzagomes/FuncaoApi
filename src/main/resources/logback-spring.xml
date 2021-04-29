@@ -12,7 +12,7 @@
 
     <springProfile name="prd,qa,dev">
         <appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">
-            <graylogHost>logstash.logstash</graylogHost>
+            <graylogHost>logstash.elk</graylogHost>
             <graylogPort>12201</graylogPort>
             <useCompression>true</useCompression>
             <encoder class="de.siegmar.logbackgelf.GelfEncoder">
