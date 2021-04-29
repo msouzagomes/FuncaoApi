@@ -1,6 +1,6 @@
 ### GENERAL ###
 server:
-  servlet.context-path: /api/funcao
+  servlet.context-path: /api
   compression.enabled: true
   error.include-message: always
 ### MONITORING ###
