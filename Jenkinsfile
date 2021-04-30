@@ -1,4 +1,4 @@
-@Library(['pipeline-test', 'utils']) _
+@Library(['pipelines', 'utils']) _
 
 CalsystemPipeline {
     PROJECT_TECH = 'maven'
