@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.com.calcred.api</groupId>
-    <artifactId>ccred-api-funcao</artifactId>
+    <groupId>br.com.calcred</groupId>
+    <artifactId>funcao-api</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
@@ -12,6 +13,11 @@
         <artifactId>spring-boot-calcard-parent</artifactId>
         <version>1.6.1</version>
     </parent>
+
+    <properties>
+        <stella.version>2.1.2</stella.version>
+        <easyrandom.version>4.2.0</easyrandom.version>
+    </properties>
 
     <dependencies>
         <!-- Servlet Context -->
@@ -123,6 +129,19 @@
             <version>3.0.1</version>
         </dependency>
 
+        <!-- cpf validator -->
+        <dependency>
+            <groupId>br.com.caelum.stella</groupId>
+            <artifactId>caelum-stella-core</artifactId>
+            <version>${stella.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- commons -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
 
         <!-- Tests -->
         <dependency>
@@ -143,6 +162,15 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Easy Random -->
+        <dependency>
+            <groupId>org.jeasy</groupId>
+            <artifactId>easy-random-core</artifactId>
+            <version>${easyrandom.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -155,29 +183,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>generate-resources</phase>
-                        <id>autbank</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                        <configuration>
-                            <sourceType>wsdl</sourceType>
-                            <sources>
-                                <source>${project.basedir}/src/main/resources/wsdl</source>
-                            </sources>
-                            <outputDirectory>target/generated-sources/</outputDirectory>
-                            <clearOutputDir>false</clearOutputDir>
-                            <packageName>autbank</packageName>
-                            <noPackageLevelAnnotations>true</noPackageLevelAnnotations>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

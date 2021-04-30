@@ -11,10 +11,10 @@ services:
       io.rancher.container.agent_service.drain_provider: 'true'
       io.rancher.container.create_agent: 'true'
       io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=${RANCHER_STACK_NAME}/lb
-  ccred-api-api:
+  funcao-api:
     mem_limit: 536870912 #512M
     mem_reservation: 402653184 #384M
-    image: 887865187465.dkr.ecr.sa-east-1.amazonaws.com/ccred-api:${TAG_VERSION}
+    image: 887865187465.dkr.ecr.sa-east-1.amazonaws.com/funcao-api:${TAG_VERSION}
     environment:
       SPRING_PROFILES_ACTIVE: ${DEPLOYENV}
       ENCRYPT_KEY: ${ENCRYPT_KEY}
@@ -26,6 +26,6 @@ services:
     stdin_open: true
     tty: true
     labels:
-      io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=${RANCHER_STACK_NAME}/ccred-api-api
+      io.rancher.scheduler.affinity:container_label_ne: io.rancher.stack_service.name=${RANCHER_STACK_NAME}/funcao-api
       io.rancher.container.hostname_override: container_name
       io.rancher.container.pull_image: always

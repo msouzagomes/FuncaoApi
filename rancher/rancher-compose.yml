@@ -7,9 +7,9 @@ services:
       certs: []
       port_rules:
         - priority: 1
-          path:  /api/ccred-api
+          path:  /api/funcao
           protocol: http
-          service: ccred-api-api
+          service: funcao-api
           source_port: 80
           target_port: 8080
     health_check:
@@ -21,7 +21,7 @@ services:
       interval: 3000
       strategy: recreate
       reinitializing_timeout: 60000
-  ccred-api-api:
+  funcao-api:
     scale: 1
     start_on_create: true
     health_check:
@@ -32,6 +32,6 @@ services:
       initializing_timeout: 60000
       interval: 10000
       strategy: recreate
-      request_line: GET /api/ccred-api/actuator/health HTTP/1.0
+      request_line: GET /api/funcao/actuator/health HTTP/1.0
       reinitializing_timeout: 60000
 

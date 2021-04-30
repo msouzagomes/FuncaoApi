@@ -43,30 +43,25 @@ resilience4j.retry:
       # ignoreExceptions:
       #  - io.github.robwin.exception.BusinessException
 
+rest-template:
+  timeout:
+    connect: 5000
+    read: 15000
+
+authentication:
+  credentials:
+    funcao:
+      client-secret: 00001023832C37A346EBB74ED69612B23CA7DE2698
+      grant-type: filicenca
+      username: USUARIOTIAPI
+      password: porto123
+      client-id: 995000
+
 api:
-  egress:
-    host: ${API_CCRED-API_EGRESS_HOST:https://hml-pierlabs.calcard.com.br}
-    consumer-key: ${API_CCRED-API_EGRESS_CONSUMER_KEY:123456}
-  autbank:
-    consumer-key: Basic c3VwZXJ2aXNvcjpzdXBlcnZpc29y
-    abovws:
-      username: SUPERVISOR
-      rest:
-        host: http://10.0.8.12:8080
-        basePath: /ABOVWS/api
-        factor: /fator
-        createProposal: /propostai
-        effectiveProposal: /proposta
-        simulate: /simulacao
-        operation: /operacao
-        installment: /parcela
-    abcvws:
-      username: SUPERVISOR
-      password: supervisor
-      soap:
-        urlService: http://10.0.8.12:8080/portal2CVWS/services/WS_Boleto
-        namespace: http://boletos.dg.cv.autbank.com.br
-    abibws:
-      soap:
-        urlService: http://10.0.8.12:8080/ABIBWS/services/IB_ServicesLT
-        namespace: http://literal.autbank.com.br
+  path:
+    funcao:
+      host: https://api-funcao-qa.calcred.com.br
+      autenticacao: /oauth/token
+      proposta:
+        baseUrl: /FSAPI/FIApiAutConsPropEsteiraCred
+        consultarPropostasPaginadas: /Esteira
