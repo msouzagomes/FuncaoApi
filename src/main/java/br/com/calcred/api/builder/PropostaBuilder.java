@@ -4,6 +4,7 @@ import static java.util.Optional.ofNullable;
 
 import br.com.calcred.api.dto.funcao.proposta.Proposta;
 import br.com.calcred.api.integration.funcao.dto.proposta.Proposta.Esteira;
+import br.com.calcred.api.integration.funcao.dto.proposta.SituacaoEsteira;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ public class PropostaBuilder {
                 .numeroProposta(p.getNumeroProposta())
                 .situacaoEsteira(ofNullable(p.getEsteira())
                     .map(Esteira::getSituacaoEsteira)
+                    .map(SituacaoEsteira::fromString)
                     .orElse(null))
                 .build())
             .orElse(null);
