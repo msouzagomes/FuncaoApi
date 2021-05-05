@@ -10,15 +10,15 @@ import lombok.With;
 
 @Value
 @With
-@JsonDeserialize(builder = StatusResponse.JacksonBuilder.class)
+@JsonDeserialize(builder = FuncaoStatusBody.JacksonBuilder.class)
 @Builder(builderClassName = "JacksonBuilder")
-public class StatusResponse {
+public class FuncaoStatusBody {
 
     @JsonProperty("CODIGO")
     Codigo codigo;
 
     @JsonProperty("ERROS")
-    Erros erros;
+    FuncaoErrorBody funcaoErrorBody;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class JacksonBuilder {

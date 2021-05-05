@@ -21,7 +21,7 @@ import br.com.calcred.api.builder.SimulacaoMapper;
 import br.com.calcred.api.fixture.Fixture;
 import br.com.calcred.api.integration.funcao.SimulacaoFuncaoClient;
 import br.com.calcred.api.integration.funcao.dto.erro.Codigo;
-import br.com.calcred.api.integration.funcao.dto.erro.StatusResponse;
+import br.com.calcred.api.integration.funcao.dto.erro.FuncaoStatusBody;
 import br.com.calcred.api.integration.funcao.dto.simulacao.Simulacao;
 import br.com.calcred.api.integration.funcao.dto.simulacao.SimularPropostaResponse;
 import br.com.calcred.api.integration.funcao.dto.simulacao.SimularPropostasRequest;
@@ -55,23 +55,19 @@ public class SimulacaoFuncaoServiceTest {
         final SimularPropostaResponse responseDTO = Fixture.make(SimularPropostaResponse.builder().build());
 
         final Simulacao simulacaoSucesso = Fixture
-            .make(Simulacao.builder()).statusResponse(
-                StatusResponse.builder().codigo(Codigo.SUCESSO).build())
+            .make(Simulacao.builder()).statusBody(FuncaoStatusBody.builder().codigo(Codigo.SUCESSO).build())
             .quantidadeParcelas(nextInt(quantidadeMinimaParcelas, quantidadeMaximaParcelas)).build();
         responseDTO.getSimulacoes().getSimulacao().add(simulacaoSucesso);
         final Simulacao simulacaoMinima = Fixture
-            .make(Simulacao.builder()).statusResponse(
-                StatusResponse.builder().codigo(Codigo.SUCESSO).build())
+            .make(Simulacao.builder()).statusBody(FuncaoStatusBody.builder().codigo(Codigo.SUCESSO).build())
             .quantidadeParcelas(quantidadeMinimaParcelas - nextInt()).build();
         responseDTO.getSimulacoes().getSimulacao().add(simulacaoMinima);
         final Simulacao simulacaoMaxima = Fixture
-            .make(Simulacao.builder()).statusResponse(
-                StatusResponse.builder().codigo(Codigo.SUCESSO).build())
+            .make(Simulacao.builder()).statusBody(FuncaoStatusBody.builder().codigo(Codigo.SUCESSO).build())
             .quantidadeParcelas(quantidadeMaximaParcelas + nextInt()).build();
         responseDTO.getSimulacoes().getSimulacao().add(simulacaoMaxima);
         final Simulacao simulacaoErro = Fixture
-            .make(Simulacao.builder()).statusResponse(
-                StatusResponse.builder().codigo(Codigo.ERRO).build())
+            .make(Simulacao.builder()).statusBody(FuncaoStatusBody.builder().codigo(Codigo.ERRO).build())
             .quantidadeParcelas(nextInt(quantidadeMinimaParcelas, quantidadeMaximaParcelas)).build();
         responseDTO.getSimulacoes().getSimulacao().add(simulacaoErro);
 

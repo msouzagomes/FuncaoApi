@@ -11,9 +11,9 @@ import lombok.Builder;
 import lombok.Value;
 
 @Value
-@JsonDeserialize(builder = Erros.JacksonBuilder.class)
+@JsonDeserialize(builder = FuncaoErrorBody.JacksonBuilder.class)
 @Builder(builderClassName = "JacksonBuilder")
-public class Erros implements Serializable {
+public class FuncaoErrorBody implements Serializable {
 
     @JsonProperty("ERRO")
     List<Erro> erros;
@@ -25,6 +25,9 @@ public class Erros implements Serializable {
 
         @JsonProperty("MENSAGEM")
         String mensagem;
+
+        @JsonProperty("CODIGO")
+        CodigoError codigo;
 
         @JsonPOJOBuilder(withPrefix = "")
         public static class JacksonBuilder {

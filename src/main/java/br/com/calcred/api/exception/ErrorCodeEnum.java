@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 public enum ErrorCodeEnum {
 
-    ERROR_AUTENTICACAO_FUNCAO("error.autenticacao.funcao"),
-    ERROR_ACCOUNT_INTEGRATION_DECODER("error.account.integration.decoder"),
-    ERROR_CPF_INVALID("error.cpf.invalid");
+    CPF_INVALIDO("cpf.invalido"),
+    ERRO_AUTENTICAR_FUNCAO("erro.autenticacao.funcao"),
+    ERRO_INTEGRACAO_FUNCAO("erro.integracao.funcao");
 
     private final String messageKey;
 }
