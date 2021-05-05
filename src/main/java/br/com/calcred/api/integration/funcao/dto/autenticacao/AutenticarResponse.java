@@ -1,4 +1,4 @@
-package br.com.calcred.api.integration.funcao.dto;
+package br.com.calcred.api.integration.funcao.dto.autenticacao;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

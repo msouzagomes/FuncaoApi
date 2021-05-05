@@ -1,6 +1,7 @@
-package br.com.calcred.api.integration.funcao.dto.proposta;
+package br.com.calcred.api.integration.funcao.dto.erro;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -8,27 +9,22 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import lombok.Builder;
 import lombok.Value;
-import lombok.With;
 
 @Value
-@With
-@JsonDeserialize(builder = Proposta.JacksonBuilder.class)
+@JsonDeserialize(builder = Erros.JacksonBuilder.class)
 @Builder(builderClassName = "JacksonBuilder")
-public class Proposta {
+public class Erros implements Serializable {
 
-    @JsonProperty("NumeroProposta")
-    String numeroProposta;
-
-    @JsonProperty("Esteira")
-    Esteira esteira;
+    @JsonProperty("ERRO")
+    List<Erro> erros;
 
     @Value
-    @JsonDeserialize(builder = Esteira.JacksonBuilder.class)
+    @JsonDeserialize(builder = Erro.JacksonBuilder.class)
     @Builder(builderClassName = "JacksonBuilder")
-    public static class Esteira implements Serializable {
+    public static class Erro implements Serializable {
 
-        @JsonProperty("SituacaoEsteira")
-        String situacaoEsteira;
+        @JsonProperty("MENSAGEM")
+        String mensagem;
 
         @JsonPOJOBuilder(withPrefix = "")
         public static class JacksonBuilder {
@@ -40,5 +36,4 @@ public class Proposta {
     public static class JacksonBuilder {
 
     }
-
 }

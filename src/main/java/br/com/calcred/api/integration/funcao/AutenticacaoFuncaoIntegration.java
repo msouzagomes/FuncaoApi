@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.calcred.api.exception.InternalException;
 import br.com.calcred.api.helper.MessageHelper;
-import br.com.calcred.api.integration.funcao.dto.AutenticarResponse;
+import br.com.calcred.api.integration.funcao.dto.autenticacao.AutenticarResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

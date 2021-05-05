@@ -35,7 +35,7 @@ public class PropostaFuncaoService {
 
         cpfValidator.validar(cpf);
 
-        log.debug("Consultando as propostas para o cliente {}" + sha256Hex(cpf));
+        log.info("Consultando as propostas para o cliente {}" + sha256Hex(cpf));
 
         ConsultarPropostasPaginadasRequestDTO request = ConsultarPropostasPaginadasRequestDTOMapper
             .buildConsultarPropostasPaginadasRequestDTO(cpf, pagina, quantidade, ordenacao);

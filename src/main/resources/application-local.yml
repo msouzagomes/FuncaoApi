@@ -65,3 +65,6 @@ api:
       proposta:
         baseUrl: /FSAPI/FIApiAutConsPropEsteiraCred
         consultarPropostasPaginadas: /Esteira
+      simulacao:
+        baseUrl: /FSAPI/FIApiAutorizadorSimulacaoDePropostasCP
+        simulacaoProposta: /SimulacaoPropostaCP/SimulacaoPropostaCP

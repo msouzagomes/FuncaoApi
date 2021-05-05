@@ -1,11 +1,14 @@
 package br.com.calcred.api.service.funcao;
 
 import static br.com.calcred.api.utils.RandomUtils.aleatorio;
+import static br.com.calcred.api.utils.RandomUtils.gerarLista;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +21,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import br.com.caelum.stella.format.CPFFormatter;
 import br.com.calcred.api.dto.funcao.proposta.ConsultarPropostasResponse;
 import br.com.calcred.api.dto.funcao.proposta.OrdenacaoConsultaPropostas;
-import br.com.calcred.api.dto.funcao.proposta.Proposta;
 import br.com.calcred.api.fixture.Fixture;
 import br.com.calcred.api.integration.funcao.PropostaFuncaoClient;
 import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasRequestDTO;
 import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasResponseDTO;
+import br.com.calcred.api.integration.funcao.dto.proposta.Proposta;
+import br.com.calcred.api.integration.funcao.dto.proposta.Proposta.Esteira;
+import br.com.calcred.api.integration.funcao.dto.proposta.Propostas;
+import br.com.calcred.api.integration.funcao.dto.proposta.SituacaoEsteira;
 import br.com.calcred.api.validator.CpfValidator;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -47,8 +53,13 @@ public class PropostaFuncaoServiceTest {
         Integer pagina = nextInt();
         Integer quantidade = nextInt();
         OrdenacaoConsultaPropostas ordenacao = aleatorio(OrdenacaoConsultaPropostas.values());
+        List<Proposta> list = gerarLista(() -> Proposta.builder().esteira(
+            Esteira.builder()
+                .situacaoEsteira(aleatorio(SituacaoEsteira.values()).getValor())
+                .build()).build(), 1, 10);
+        Propostas propostas = Fixture.make(Propostas.builder()).propostas(list).build();
         ConsultarPropostasPaginadasResponseDTO responseDTO = Fixture
-            .make(ConsultarPropostasPaginadasResponseDTO.builder().build());
+            .make(ConsultarPropostasPaginadasResponseDTO.builder()).propostas(propostas).build();
 
         when(propostaFuncaoClient
             .consultarPropostasPaginadas(consultarPropostasPaginadasRequestArgumentCaptor.capture()))
@@ -69,11 +80,11 @@ public class PropostaFuncaoServiceTest {
 
         responseDTO.getPropostas().getPropostas().forEach(expected -> {
 
-            Proposta proposta = response.getPropostas()
+            br.com.calcred.api.dto.funcao.proposta.Proposta proposta = response.getPropostas()
                 .get(responseDTO.getPropostas().getPropostas().indexOf(expected));
 
-            assertEquals(proposta.getNumeroProposta(), proposta.getNumeroProposta());
-            assertEquals(proposta.getSituacaoEsteira(), proposta.getSituacaoEsteira());
+            assertEquals(proposta.getNumeroProposta(), expected.getNumeroProposta());
+            assertEquals(proposta.getSituacaoEsteira().getValor(), expected.getEsteira().getSituacaoEsteira());
         });
     }
 
