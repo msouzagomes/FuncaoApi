@@ -16,7 +16,7 @@ import br.com.calcred.api.dto.funcao.simulacao.Simulacao;
 import br.com.calcred.api.dto.funcao.simulacao.SimularPropostasResponse;
 import br.com.calcred.api.integration.funcao.SimulacaoFuncaoClient;
 import br.com.calcred.api.integration.funcao.dto.erro.Codigo;
-import br.com.calcred.api.integration.funcao.dto.erro.StatusResponse;
+import br.com.calcred.api.integration.funcao.dto.erro.FuncaoStatusBody;
 import br.com.calcred.api.integration.funcao.dto.simulacao.Simulacoes;
 import br.com.calcred.api.integration.funcao.dto.simulacao.SimularPropostaResponse;
 import br.com.calcred.api.integration.funcao.dto.simulacao.SimularPropostasRequest;
@@ -42,15 +42,15 @@ public class SimulacaoFuncaoService {
 
         final SimularPropostasRequest requestDTO = buildSimularPropostaRequestDTO(request);
 
-        final SimularPropostaResponse responseDTO = simulacaoFuncaoClient.simularProposta(requestDTO);
+        final SimularPropostaResponse propostaResponse = simulacaoFuncaoClient.simularProposta(requestDTO);
 
-        final List<Simulacao> simulacoes = ofNullable(responseDTO)
+        final List<Simulacao> simulacoes = ofNullable(propostaResponse)
             .map(SimularPropostaResponse::getSimulacoes)
             .map(Simulacoes::getSimulacao)
             .map(list -> list.stream()
                 .filter(simulacao ->
-                    ofNullable(simulacao.getStatusResponse())
-                        .map(StatusResponse::getCodigo)
+                    ofNullable(simulacao.getStatusBody())
+                        .map(FuncaoStatusBody::getCodigo)
                         .orElse(null) == Codigo.SUCESSO)
                 .filter(simulacao -> simulacao.getQuantidadeParcelas() <= request.getQuantidadeMaximaParcelas())
                 .filter(simulacao -> simulacao.getQuantidadeParcelas() >= request.getQuantidadeMinimaParcelas())
@@ -61,4 +61,5 @@ public class SimulacaoFuncaoService {
 
         return SimularPropostasResponse.builder().simulacoes(simulacoes).build();
     }
+
 }

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import br.com.calcred.api.integration.funcao.dto.erro.StatusResponse;
+import br.com.calcred.api.integration.funcao.dto.erro.FuncaoStatusBody;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
@@ -45,7 +45,7 @@ public class Simulacao implements Serializable {
     BigDecimal taxaClAm;
 
     @JsonProperty("STATUS")
-    StatusResponse statusResponse;
+    FuncaoStatusBody statusBody;
 
     @JsonProperty("Despesas")
     Despesas despesas;

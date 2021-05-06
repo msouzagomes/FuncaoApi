@@ -1,10 +1,10 @@
 package br.com.calcred.api.integration.config;
 
-import br.com.calcred.api.integration.exception.IntegrationException;
+import java.util.concurrent.TimeUnit;
+
+import br.com.calcred.api.exception.InternalErrorException;
 import feign.RetryableException;
 import feign.Retryer;
-import org.springframework.http.HttpStatus;
-import java.util.concurrent.TimeUnit;
 
 public class CustomRetryer implements Retryer {
 
@@ -18,7 +18,7 @@ public class CustomRetryer implements Retryer {
         this(100L, TimeUnit.SECONDS.toMillis(1L), 5);
     }
 
-    public CustomRetryer(long period, long maxPeriod, int maxAttempts) {
+    public CustomRetryer(final long period, final long maxPeriod, final int maxAttempts) {
         this.period = period;
         this.maxPeriod = maxPeriod;
         this.maxAttempts = maxAttempts;
@@ -29,12 +29,10 @@ public class CustomRetryer implements Retryer {
         return System.currentTimeMillis();
     }
 
-    public void continueOrPropagate(RetryableException e) {
+    @Override
+    public void continueOrPropagate(final RetryableException e) {
         if (this.attempt++ >= this.maxAttempts) {
-            if (e.status() == -1)
-                throw new IntegrationException( HttpStatus.INTERNAL_SERVER_ERROR , e );
-
-            throw new IntegrationException(HttpStatus.valueOf(e.status()), e );
+            throw new InternalErrorException("Erro interno");
         } else {
             long interval;
             if (e.retryAfter() != null) {
@@ -52,7 +50,7 @@ public class CustomRetryer implements Retryer {
 
             try {
                 Thread.sleep(interval);
-            } catch (InterruptedException var5) {
+            } catch (final InterruptedException var5) {
                 Thread.currentThread().interrupt();
                 throw e;
             }
@@ -62,10 +60,11 @@ public class CustomRetryer implements Retryer {
     }
 
     long nextMaxInterval() {
-        long interval = (long)((double)this.period * Math.pow(1.5D, (double)(this.attempt - 1)));
+        final long interval = (long) ((double) this.period * Math.pow(1.5D, (double) (this.attempt - 1)));
         return interval > this.maxPeriod ? this.maxPeriod : interval;
     }
 
+    @Override
     public Retryer clone() {
         return new CustomRetryer(this.period, this.maxPeriod, this.maxAttempts);
     }

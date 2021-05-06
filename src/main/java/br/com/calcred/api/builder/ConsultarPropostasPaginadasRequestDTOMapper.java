@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConsultarPropostasPaginadasRequestDTOMapper {
 
-    public static ConsultarPropostasPaginadasRequestDTO buildConsultarPropostasPaginadasRequestDTO(String cpf,
-        Integer pagina, Integer quantidade, OrdenacaoConsultaPropostas ordenacao) {
+    public static ConsultarPropostasPaginadasRequestDTO buildConsultarPropostasPaginadasRequestDTO(final String cpf,
+        final Integer pagina, final Integer quantidade, final OrdenacaoConsultaPropostas ordenacao) {
 
         return ConsultarPropostasPaginadasRequestDTO.builder()
             .ordenacao(ordenacao.getValor())
