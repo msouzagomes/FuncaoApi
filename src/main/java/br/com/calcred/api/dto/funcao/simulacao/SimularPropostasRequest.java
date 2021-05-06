@@ -2,6 +2,7 @@ package br.com.calcred.api.dto.funcao.simulacao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 import javax.validation.constraints.NotBlank;
@@ -37,7 +38,7 @@ public class SimularPropostasRequest implements Serializable {
     OffsetDateTime dataBase;
 
     @NotNull(message = "Data primeiro vencimento deve ser informada.")
-    OffsetDateTime dataPrimeiroVencimento;
+    LocalDate dataPrimeiroVencimento;
 
     @NotNull(message = "Tipo do primeiro vencimento deve ser informado.")
     TipoPrimeiroVencimento tipoPrimeiroVencimento;

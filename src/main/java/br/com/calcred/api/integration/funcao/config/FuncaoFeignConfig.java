@@ -1,6 +1,8 @@
 package br.com.calcred.api.integration.funcao.config;
 
+import static br.com.calcred.api.exception.ErrorCodeEnum.ERRO_CARENCIA_SIMULACAO_INVALIDA;
 import static br.com.calcred.api.exception.ErrorCodeEnum.ERRO_INTEGRACAO_FUNCAO;
+import static br.com.calcred.api.integration.funcao.dto.erro.CodigoError.CARENCIA_SIMULACAO_INVALIDA;
 import static br.com.calcred.api.integration.funcao.dto.erro.CodigoError.CLIENTE_SEM_PROPOSTAS;
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
@@ -10,6 +12,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Optional.ofNullable;
 import static org.apache.logging.log4j.util.Strings.EMPTY;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -26,6 +29,7 @@ import br.com.calcred.api.exception.BusinessErrorException;
 import br.com.calcred.api.exception.InternalErrorException;
 import br.com.calcred.api.helper.MessageHelper;
 import br.com.calcred.api.integration.config.CustomRetryer;
+import br.com.calcred.api.integration.funcao.dto.erro.CodigoError;
 import br.com.calcred.api.integration.funcao.dto.erro.FuncaoErrorBody;
 import br.com.calcred.api.integration.funcao.dto.erro.FuncaoErrorBody.Erro;
 import br.com.calcred.api.integration.funcao.dto.erro.FuncaoStatusBody;
@@ -59,17 +63,21 @@ public class FuncaoFeignConfig {
 
             logHttpError(response, status);
 
+            final CodigoError codigoError = ofNullable(responseStatus)
+                .map(FuncaoStatusBodyResponse::getStatusBody)
+                .map(FuncaoStatusBody::getFuncaoErrorBody)
+                .map(FuncaoErrorBody::getErros)
+                .map(erros -> erros.get(0))
+                .map(Erro::getCodigo)
+                .orElse(null);
+
             final String errorMessage = messageHelper.get(ERRO_INTEGRACAO_FUNCAO);
 
             return Match(response).of(
-                Case($(res -> status == BAD_REQUEST &&
-                    ofNullable(responseStatus).
-                        map(FuncaoStatusBodyResponse::getStatusBody)
-                        .map(FuncaoStatusBody::getFuncaoErrorBody)
-                        .map(FuncaoErrorBody::getErros)
-                        .map(erros -> erros.get(0))
-                        .map(Erro::getCodigo)
-                        .orElse(null) == CLIENTE_SEM_PROPOSTAS), new BusinessErrorException(NOT_FOUND)),
+                Case($(res -> status == BAD_REQUEST && codigoError == CLIENTE_SEM_PROPOSTAS),
+                    new BusinessErrorException(NOT_FOUND)),
+                Case($(res -> status == BAD_REQUEST && codigoError == CARENCIA_SIMULACAO_INVALIDA),
+                    new BusinessErrorException(NOT_ACCEPTABLE, messageHelper.get(ERRO_CARENCIA_SIMULACAO_INVALIDA))),
                 Case($(res -> HttpStatus.valueOf(res.status()).is5xxServerError() || status == UNAUTHORIZED),
                     new RetryableException(
                         status.value(),

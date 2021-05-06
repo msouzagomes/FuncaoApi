@@ -91,7 +91,7 @@ public class SimulacaoFuncaoServiceTest {
         assertEquals(request.getValorFinanciado(), actualSimulacaoRequest.getCondicaoCredito().getValorFinanciado());
         assertEquals(request.getDataBase().toLocalDateTime(),
             actualSimulacaoRequest.getCondicaoCredito().getDataBase());
-        assertEquals(request.getDataPrimeiroVencimento().toLocalDateTime(),
+        assertEquals(request.getDataPrimeiroVencimento(),
             actualSimulacaoRequest.getCondicaoCredito().getDataPrimeiroVencimento());
         assertEquals(request.getTipoPrimeiroVencimento().getValor(),
             actualSimulacaoRequest.getCondicaoCredito().getTipoPrimeiroVencimento());

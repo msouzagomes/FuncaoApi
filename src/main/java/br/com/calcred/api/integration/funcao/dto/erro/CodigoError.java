@@ -12,6 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum CodigoError {
 
+    CARENCIA_SIMULACAO_INVALIDA(90599999),
     CLIENTE_SEM_PROPOSTAS(112970030);
 
     Integer valor;

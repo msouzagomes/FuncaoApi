@@ -2,6 +2,7 @@ package br.com.calcred.api.integration.funcao.dto.simulacao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class SimularPropostasRequest implements Serializable {
         Parcelas parcelas;
         BigDecimal valorFinanciado;
         LocalDateTime dataBase;
-        LocalDateTime dataPrimeiroVencimento;
+        LocalDate dataPrimeiroVencimento;
         String tipoPrimeiroVencimento;
         DadoCadastral dadoCadastral;
 
