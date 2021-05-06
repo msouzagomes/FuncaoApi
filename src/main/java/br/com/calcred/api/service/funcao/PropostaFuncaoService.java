@@ -16,8 +16,8 @@ import br.com.calcred.api.dto.funcao.proposta.OrdenacaoConsultaPropostas;
 import br.com.calcred.api.dto.funcao.proposta.Proposta;
 import br.com.calcred.api.exception.BusinessErrorException;
 import br.com.calcred.api.integration.funcao.PropostaFuncaoClient;
-import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasRequestDTO;
-import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasResponseDTO;
+import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasRequest;
+import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasResponse;
 import br.com.calcred.api.integration.funcao.dto.proposta.Propostas;
 import br.com.calcred.api.validator.CpfValidator;
 import lombok.RequiredArgsConstructor;
@@ -36,17 +36,17 @@ public class PropostaFuncaoService {
 
         cpfValidator.validar(cpf);
 
-        log.info("Consultando as propostas para o cliente {}" + sha256Hex(cpf));
+        log.info("Consultando as propostas para o cliente {}", sha256Hex(cpf));
 
-        final ConsultarPropostasPaginadasRequestDTO request = ConsultarPropostasPaginadasRequestDTOMapper
+        final ConsultarPropostasPaginadasRequest request = ConsultarPropostasPaginadasRequestDTOMapper
             .buildConsultarPropostasPaginadasRequestDTO(cpf, pagina, quantidade, ordenacao);
 
         try {
-            final ConsultarPropostasPaginadasResponseDTO responseDTO = propostaFuncaoClient
+            final ConsultarPropostasPaginadasResponse responseDTO = propostaFuncaoClient
                 .consultarPropostasPaginadas(request);
 
             final List<Proposta> propostas = ofNullable(responseDTO)
-                .map(ConsultarPropostasPaginadasResponseDTO::getPropostas)
+                .map(ConsultarPropostasPaginadasResponse::getPropostas)
                 .map(Propostas::getPropostas)
                 .map(p -> p.stream()
                     .map(PropostaBuilder::buildProposta)

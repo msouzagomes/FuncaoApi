@@ -9,8 +9,8 @@ import lombok.Getter;
 public enum TipoPrimeiroVencimento {
 
     ANIVERSARIO("Aniversario"),
-    INFORMADO("Informado"),
-    SITUACAO_ESTEIRA("SituacaoEsteira");
+    CARENCIA("Carencia"),
+    INFORMADO("Informado");
 
     String valor;
 }

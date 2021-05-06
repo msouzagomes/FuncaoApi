@@ -3,6 +3,8 @@ package br.com.calcred.api.integration.funcao.config;
 import static br.com.calcred.api.exception.ErrorCodeEnum.ERRO_CARENCIA_SIMULACAO_INVALIDA;
 import static br.com.calcred.api.exception.ErrorCodeEnum.ERRO_INTEGRACAO_FUNCAO;
 import static br.com.calcred.api.integration.funcao.dto.erro.CodigoError.CARENCIA_SIMULACAO_INVALIDA;
+import static br.com.calcred.api.integration.funcao.dto.erro.CodigoError.CLIENTE_SEM_OPERACOES_PRIMEIRO;
+import static br.com.calcred.api.integration.funcao.dto.erro.CodigoError.CLIENTE_SEM_OPERACOES_SEGUNDO;
 import static br.com.calcred.api.integration.funcao.dto.erro.CodigoError.CLIENTE_SEM_PROPOSTAS;
 import static io.vavr.API.$;
 import static io.vavr.API.Case;
@@ -10,11 +12,14 @@ import static io.vavr.API.Match;
 import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
 import static org.apache.logging.log4j.util.Strings.EMPTY;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,25 +63,21 @@ public class FuncaoFeignConfig {
     ErrorDecoder errorDecoder() {
         return (s, response) -> {
 
-            final FuncaoStatusBodyResponse responseStatus = getFuncaoStatusBodyResponse(response);
             final HttpStatus status = HttpStatus.valueOf(response.status());
 
             logHttpError(response, status);
 
-            final CodigoError codigoError = ofNullable(responseStatus)
-                .map(FuncaoStatusBodyResponse::getStatusBody)
-                .map(FuncaoStatusBody::getFuncaoErrorBody)
-                .map(FuncaoErrorBody::getErros)
-                .map(erros -> erros.get(0))
-                .map(Erro::getCodigo)
-                .orElse(null);
+            final List<CodigoError> codigoErrors = getCodigoErrors(response);
 
             final String errorMessage = messageHelper.get(ERRO_INTEGRACAO_FUNCAO);
 
             return Match(response).of(
-                Case($(res -> status == BAD_REQUEST && codigoError == CLIENTE_SEM_PROPOSTAS),
+                Case($(res -> status == BAD_REQUEST && codigoErrors.contains(CLIENTE_SEM_PROPOSTAS)),
                     new BusinessErrorException(NOT_FOUND)),
-                Case($(res -> status == BAD_REQUEST && codigoError == CARENCIA_SIMULACAO_INVALIDA),
+                Case($(res -> status == BAD_REQUEST && (codigoErrors.contains(CLIENTE_SEM_OPERACOES_PRIMEIRO) ||
+                        codigoErrors.contains(CLIENTE_SEM_OPERACOES_SEGUNDO))),
+                    new BusinessErrorException(NOT_FOUND)),
+                Case($(res -> status == BAD_REQUEST && codigoErrors.contains(CARENCIA_SIMULACAO_INVALIDA)),
                     new BusinessErrorException(NOT_ACCEPTABLE, messageHelper.get(ERRO_CARENCIA_SIMULACAO_INVALIDA))),
                 Case($(res -> HttpStatus.valueOf(res.status()).is5xxServerError() || status == UNAUTHORIZED),
                     new RetryableException(
@@ -96,6 +97,19 @@ public class FuncaoFeignConfig {
             log.warn("Erro ao converter FuncaoStatusBodyResponse.");
             return null;
         }
+    }
+
+    private List<CodigoError> getCodigoErrors(final Response response) {
+
+        final FuncaoStatusBodyResponse responseStatus = getFuncaoStatusBodyResponse(response);
+
+        return ofNullable(responseStatus)
+            .map(FuncaoStatusBodyResponse::getStatusBody)
+            .map(FuncaoStatusBody::getFuncaoErrorBody)
+            .map(FuncaoErrorBody::getErros)
+            .map(erros -> erros.stream().map(Erro::getCodigo)
+                .collect(toList()))
+            .orElse(null);
     }
 
     private static void logHttpError(final Response response, final HttpStatus responseStatus) {
