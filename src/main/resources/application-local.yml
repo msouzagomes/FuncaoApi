@@ -1,6 +1,6 @@
 ### GENERAL ###
 server:
-  port: 8081
+  port: 8080
 
 spring:
   ### SLEUTH ###
@@ -68,3 +68,11 @@ api:
       simulacao:
         baseUrl: /FSAPI/FIApiAutorizadorSimulacaoDePropostasCP
         simulacaoProposta: /SimulacaoPropostaCP/SimulacaoPropostaCP
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    operationsSorter: method
+    disable-swagger-default-url: true
+  api-docs:
+    path: /api-docs
