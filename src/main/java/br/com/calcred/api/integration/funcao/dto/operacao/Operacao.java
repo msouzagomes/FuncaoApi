@@ -2,7 +2,7 @@ package br.com.calcred.api.integration.funcao.dto.operacao;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -34,7 +34,7 @@ public class Operacao implements Serializable {
     BigDecimal valorParcela;
 
     @JsonProperty("DataLiquidacaoContrato")
-    OffsetDateTime dataLiquidacao;
+    LocalDate dataLiquidacao;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class JacksonBuilder {
