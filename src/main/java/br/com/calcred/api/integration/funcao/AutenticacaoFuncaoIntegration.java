@@ -1,6 +1,6 @@
 package br.com.calcred.api.integration.funcao;
 
-import static br.com.calcred.api.exception.ErrorCodeEnum.ERROR_AUTENTICACAO_FUNCAO;
+import static br.com.calcred.api.exception.ErrorCodeEnum.ERRO_AUTENTICAR_FUNCAO;
 import static java.util.Optional.ofNullable;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -15,9 +15,9 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.calcred.api.exception.InternalException;
+import br.com.calcred.api.exception.InternalErrorException;
 import br.com.calcred.api.helper.MessageHelper;
-import br.com.calcred.api.integration.funcao.dto.AutenticarResponse;
+import br.com.calcred.api.integration.funcao.dto.autenticacao.AutenticarResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,50 +38,50 @@ public class AutenticacaoFuncaoIntegration {
     @Value("${authentication.credentials.funcao.username}")
     String username;
 
-    @Value("${authentication.credentials.funcao.client-id}")
-    String clientId;
-
     @Value("${authentication.credentials.funcao.password}")
     String password;
 
-    @Value("${api.path.funcao.autenticacao}")
-    String urlBase;
+    @Value("${api.path.funcao.autenticacao.basePath}")
+    String basePath;
 
-    public String getToken(String url) {
+    @Value("${api.path.funcao.host}")
+    String host;
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url + urlBase);
+    public String getToken(final String urlModulo, final String clientId) {
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(getBody(), getHeaders());
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(host + urlModulo + basePath);
+
+        final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(getBody(clientId), getHeaders());
 
         try {
-            ResponseEntity<AutenticarResponse> response = restTemplate
+            final ResponseEntity<AutenticarResponse> response = restTemplate
                 .postForEntity(builder.build().encode().toUri(), request, AutenticarResponse.class);
 
             return ofNullable(response)
                 .map(HttpEntity::getBody)
                 .map(AutenticarResponse::getAccessToken)
-                .orElseThrow(() -> new InternalException(messageHelper.get(ERROR_AUTENTICACAO_FUNCAO)));
+                .orElseThrow(() -> new InternalErrorException(messageHelper.get(ERRO_AUTENTICAR_FUNCAO)));
 
         } catch (final HttpStatusCodeException ex) {
 
             log.error(
                 "Erro ao obter token de autenticação na API Função, para a url {}. HttpStatusCode: {}. ResponseBody: {}",
-                url, ex.getStatusCode(), ex.getResponseBodyAsString());
-            throw new InternalException(messageHelper.get(ERROR_AUTENTICACAO_FUNCAO));
+                urlModulo, ex.getStatusCode(), ex.getResponseBodyAsString());
+            throw new InternalErrorException(messageHelper.get(ERRO_AUTENTICAR_FUNCAO));
         }
     }
 
     private HttpHeaders getHeaders() {
 
-        HttpHeaders headers = new HttpHeaders();
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         return headers;
     }
 
-    private MultiValueMap<String, String> getBody() {
+    private MultiValueMap<String, String> getBody(final String clientId) {
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        final MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("client_secret", clientSecret);
         map.add("grant_type", grantType);
         map.add("username", username);

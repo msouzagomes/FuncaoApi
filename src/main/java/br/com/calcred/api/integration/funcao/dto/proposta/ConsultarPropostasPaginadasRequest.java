@@ -9,7 +9,7 @@ import lombok.With;
 @Value
 @With
 @Builder
-public class ConsultarPropostasPaginadasRequestDTO implements Serializable {
+public class ConsultarPropostasPaginadasRequest implements Serializable {
 
     Ordenacao ordenacao;
     Paginacao paginacao;

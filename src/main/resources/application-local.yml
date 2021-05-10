@@ -1,6 +1,6 @@
 ### GENERAL ###
 server:
-  port: 8081
+  port: 8080
 
 spring:
   ### SLEUTH ###
@@ -55,13 +55,33 @@ authentication:
       grant-type: filicenca
       username: USUARIOTIAPI
       password: porto123
-      client-id: 995000
 
 api:
   path:
     funcao:
       host: https://api-funcao-qa.calcred.com.br
-      autenticacao: /oauth/token
+      autenticacao:
+        basePath: /oauth/token
       proposta:
-        baseUrl: /FSAPI/FIApiAutConsPropEsteiraCred
+        basePath: /FSAPI/FIApiAutConsPropEsteiraCred
+        credencial:
+          client-id: "995000"
         consultarPropostasPaginadas: /Esteira
+      simulacao:
+        basePath: /FSAPI/FIApiAutorizadorSimulacaoDePropostasCP
+        credencial:
+          client-id: "995000"
+        simulacaoProposta: /SimulacaoPropostaCP/SimulacaoPropostaCP
+      operacao:
+        basePath: /FSAPI/FIApiCdcConsultarOperacao
+        credencial:
+          client-id: "040000"
+        consultarOperacoes: /ConsultarOperacao/ConsultarOperacoesPorCPF
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    operationsSorter: method
+    disable-swagger-default-url: true
+  api-docs:
+    path: /api-docs

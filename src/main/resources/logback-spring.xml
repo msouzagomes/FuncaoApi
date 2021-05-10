@@ -74,13 +74,16 @@
     <springProfile name="prd">
         <logger name="org.springframework.data" additivity="false" level="WARN">
             <appender-ref ref="GELF"/>
+            <appender-ref ref="CONSOLE"/>
         </logger>
-        <logger name="br.com.calcred.api" additivity="false" level="INFO">
+        <logger name="br.com.calcred.api" additivity="false" level="DEBUG">
             <appender-ref ref="GELF"/>
+            <appender-ref ref="CONSOLE"/>
         </logger>
 
         <root level="ERROR" additivity="false">
             <appender-ref ref="GELF"/>
+            <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 

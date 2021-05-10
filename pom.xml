@@ -17,6 +17,10 @@
     <properties>
         <stella.version>2.1.2</stella.version>
         <easyrandom.version>4.2.0</easyrandom.version>
+        <springdoc-openapi.version>1.5.2</springdoc-openapi.version>
+        <resilience4j-spring-boot2.version>1.7.0</resilience4j-spring-boot2.version>
+        <resilience4j-circuitbreaker.version>1.7.0</resilience4j-circuitbreaker.version>
+        <spring-cloud-starter-sleuth.version>3.0.1</spring-cloud-starter-sleuth.version>
     </properties>
 
     <dependencies>
@@ -114,19 +118,27 @@
         <dependency>
             <groupId>io.github.resilience4j</groupId>
             <artifactId>resilience4j-spring-boot2</artifactId>
-            <version>1.7.0</version>
+            <version>${resilience4j-spring-boot2.version}</version>
         </dependency>
+
         <dependency>
             <groupId>io.github.resilience4j</groupId>
             <artifactId>resilience4j-circuitbreaker</artifactId>
-            <version>1.7.0</version>
+            <version>${resilience4j-circuitbreaker.version}</version>
         </dependency>
 
         <!-- sleuth -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-sleuth</artifactId>
-            <version>3.0.1</version>
+            <version>${spring-cloud-starter-sleuth.version}</version>
+        </dependency>
+
+        <!-- OpenAPI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc-openapi.version}</version>
         </dependency>
 
         <!-- cpf validator -->

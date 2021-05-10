@@ -16,9 +16,9 @@ public enum SituacaoEsteira {
     APROVADA("Aprovada"),
     CANCELADA("Cancelada"),
     INTEGRADA("Integrada"),
+    LIBERADA("Liberada"),
     NAO_DEFINIDO("NaoDefinido"),
     PENDENTE("Pendente"),
-    REANALISE("Reanalise"),
     REPROVADA("Reprovada");
 
     String valor;

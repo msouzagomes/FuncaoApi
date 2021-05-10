@@ -1,7 +1,7 @@
 package br.com.calcred.api.dto.funcao.proposta;
 
 
-import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasRequestDTO.Ordenacao;
+import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasRequest.Ordenacao;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
