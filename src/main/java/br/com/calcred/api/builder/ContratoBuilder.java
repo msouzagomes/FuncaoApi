@@ -2,8 +2,6 @@ package br.com.calcred.api.builder;
 
 import static java.util.Optional.ofNullable;
 
-import java.time.OffsetDateTime;
-
 import br.com.calcred.api.dto.funcao.contratos.Contrato;
 import br.com.calcred.api.integration.funcao.dto.operacao.Operacao;
 import lombok.AccessLevel;
@@ -21,9 +19,7 @@ public class ContratoBuilder {
                 .valorCredito(o.getValorCredito())
                 .valorParcela(o.getValorParcela())
                 .situacaoOperacao(o.getSituacaoOperacao())
-                .dataLiquidacao(ofNullable(o.getDataLiquidacao())
-                    .map(OffsetDateTime::toLocalDate)
-                    .orElse(null))
+                .dataLiquidacao(o.getDataLiquidacao())
                 .build())
             .orElse(null);
     }

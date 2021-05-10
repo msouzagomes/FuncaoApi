@@ -61,7 +61,7 @@ public class OperacaoFuncaoServiceTest {
             final Contrato actual = response.getContratos().get(responseDTO.getOperacoes().indexOf(expected));
 
             assertEquals(expected.getSituacaoOperacao(), actual.getSituacaoOperacao());
-            assertEquals(expected.getDataLiquidacao().toLocalDate(), actual.getDataLiquidacao());
+            assertEquals(expected.getDataLiquidacao(), actual.getDataLiquidacao());
             assertEquals(expected.getQuantidadeParcelas(), actual.getQuantidadeParcelas());
             assertEquals(expected.getValorParcela(), actual.getValorParcela());
             assertEquals(expected.getNumeroOperacao(), actual.getNumeroContrato());
