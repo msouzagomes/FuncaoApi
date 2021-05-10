@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.calcred.api.dto.funcao.contratos.ConsultarContratosResponse;
 import br.com.calcred.api.dto.funcao.proposta.ConsultarPropostasResponse;
 import br.com.calcred.api.dto.funcao.proposta.OrdenacaoConsultaPropostas;
 import br.com.calcred.api.dto.funcao.simulacao.SimularPropostasRequest;
 import br.com.calcred.api.dto.funcao.simulacao.SimularPropostasResponse;
+import br.com.calcred.api.service.funcao.OperacaoFuncaoService;
 import br.com.calcred.api.service.funcao.PropostaFuncaoService;
 import br.com.calcred.api.service.funcao.SimulacaoFuncaoService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class FuncaoResource {
 
     private final PropostaFuncaoService propostaFuncaoService;
     private final SimulacaoFuncaoService simulacaoFuncaoService;
+    private final OperacaoFuncaoService operacaoFuncaoService;
 
     @GetMapping("/propostas/{cpf}")
     public ConsultarPropostasResponse consultarPropostas(
@@ -43,4 +46,11 @@ public class FuncaoResource {
 
         return simulacaoFuncaoService.simularPropostas(request);
     }
+
+    @GetMapping("/contratos/{cpf}")
+    public ConsultarContratosResponse consultarContratos(@PathVariable("cpf") final String cpf) {
+
+        return operacaoFuncaoService.consultarContratos(cpf);
+    }
+
 }

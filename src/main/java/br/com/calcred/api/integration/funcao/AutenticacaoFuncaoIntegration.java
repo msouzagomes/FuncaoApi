@@ -38,20 +38,20 @@ public class AutenticacaoFuncaoIntegration {
     @Value("${authentication.credentials.funcao.username}")
     String username;
 
-    @Value("${authentication.credentials.funcao.client-id}")
-    String clientId;
-
     @Value("${authentication.credentials.funcao.password}")
     String password;
 
-    @Value("${api.path.funcao.autenticacao}")
-    String urlBase;
+    @Value("${api.path.funcao.autenticacao.basePath}")
+    String basePath;
 
-    public String getToken(final String url) {
+    @Value("${api.path.funcao.host}")
+    String host;
 
-        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url + urlBase);
+    public String getToken(final String urlModulo, final String clientId) {
 
-        final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(getBody(), getHeaders());
+        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(host + urlModulo + basePath);
+
+        final HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(getBody(clientId), getHeaders());
 
         try {
             final ResponseEntity<AutenticarResponse> response = restTemplate
@@ -66,7 +66,7 @@ public class AutenticacaoFuncaoIntegration {
 
             log.error(
                 "Erro ao obter token de autenticação na API Função, para a url {}. HttpStatusCode: {}. ResponseBody: {}",
-                url, ex.getStatusCode(), ex.getResponseBodyAsString());
+                urlModulo, ex.getStatusCode(), ex.getResponseBodyAsString());
             throw new InternalErrorException(messageHelper.get(ERRO_AUTENTICAR_FUNCAO));
         }
     }
@@ -79,7 +79,7 @@ public class AutenticacaoFuncaoIntegration {
         return headers;
     }
 
-    private MultiValueMap<String, String> getBody() {
+    private MultiValueMap<String, String> getBody(final String clientId) {
 
         final MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("client_secret", clientSecret);

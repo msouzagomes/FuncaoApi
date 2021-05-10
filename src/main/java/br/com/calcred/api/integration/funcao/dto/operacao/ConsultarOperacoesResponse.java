@@ -1,6 +1,7 @@
-package br.com.calcred.api.integration.funcao.dto.proposta;
+package br.com.calcred.api.integration.funcao.dto.operacao;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -12,12 +13,12 @@ import lombok.With;
 
 @Value
 @With
-@JsonDeserialize(builder = ConsultarPropostasPaginadasResponseDTO.JacksonBuilder.class)
+@JsonDeserialize(builder = ConsultarOperacoesResponse.JacksonBuilder.class)
 @Builder(builderClassName = "JacksonBuilder")
-public class ConsultarPropostasPaginadasResponseDTO implements Serializable {
+public class ConsultarOperacoesResponse implements Serializable {
 
-    @JsonProperty("Propostas")
-    Propostas propostas;
+    @JsonProperty("OutOperacaoCPF")
+    List<Operacao> operacoes;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static class JacksonBuilder {

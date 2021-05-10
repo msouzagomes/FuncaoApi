@@ -27,8 +27,8 @@ import br.com.calcred.api.dto.funcao.proposta.OrdenacaoConsultaPropostas;
 import br.com.calcred.api.exception.BusinessErrorException;
 import br.com.calcred.api.fixture.Fixture;
 import br.com.calcred.api.integration.funcao.PropostaFuncaoClient;
-import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasRequestDTO;
-import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasResponseDTO;
+import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasRequest;
+import br.com.calcred.api.integration.funcao.dto.proposta.ConsultarPropostasPaginadasResponse;
 import br.com.calcred.api.integration.funcao.dto.proposta.Proposta;
 import br.com.calcred.api.integration.funcao.dto.proposta.Proposta.Esteira;
 import br.com.calcred.api.integration.funcao.dto.proposta.Propostas;
@@ -39,7 +39,7 @@ import br.com.calcred.api.validator.CpfValidator;
 public class PropostaFuncaoServiceTest {
 
     @Captor
-    private ArgumentCaptor<ConsultarPropostasPaginadasRequestDTO> consultarPropostasPaginadasRequestArgumentCaptor;
+    private ArgumentCaptor<ConsultarPropostasPaginadasRequest> consultarPropostasPaginadasRequestArgumentCaptor;
 
     @InjectMocks
     private PropostaFuncaoService service;
@@ -62,20 +62,21 @@ public class PropostaFuncaoServiceTest {
                 .situacaoEsteira(aleatorio(SituacaoEsteira.values()).getValor())
                 .build()).build(), 1, 10);
         final Propostas propostas = Fixture.make(Propostas.builder()).propostas(list).build();
-        final ConsultarPropostasPaginadasResponseDTO responseDTO = Fixture
-            .make(ConsultarPropostasPaginadasResponseDTO.builder()).propostas(propostas).build();
+        final ConsultarPropostasPaginadasResponse responseDTO = Fixture
+            .make(ConsultarPropostasPaginadasResponse.builder()).propostas(propostas).build();
 
         when(propostaFuncaoClient
             .consultarPropostasPaginadas(consultarPropostasPaginadasRequestArgumentCaptor.capture()))
             .thenReturn(responseDTO);
 
-        final ConsultarPropostasResponse response = service.consultarPropostasPaginadas(cpf, pagina, quantidade, ordenacao);
+        final ConsultarPropostasResponse response = service
+            .consultarPropostasPaginadas(cpf, pagina, quantidade, ordenacao);
 
         verify(cpfValidator).validar(cpf);
         verify(propostaFuncaoClient)
             .consultarPropostasPaginadas(consultarPropostasPaginadasRequestArgumentCaptor.capture());
 
-        final ConsultarPropostasPaginadasRequestDTO actual = consultarPropostasPaginadasRequestArgumentCaptor.getValue();
+        final ConsultarPropostasPaginadasRequest actual = consultarPropostasPaginadasRequestArgumentCaptor.getValue();
         assertEquals(actual.getOrdenacao().getTipoOrdenacao(), ordenacao.getValor().getTipoOrdenacao());
         assertEquals(actual.getOrdenacao().getCampoOrdenacao(), ordenacao.getValor().getCampoOrdenacao());
         assertEquals(actual.getPaginacao().getNumeroPagina(), pagina);
@@ -93,7 +94,7 @@ public class PropostaFuncaoServiceTest {
     }
 
     @Test
-    public void consultar_propostas_erro() {
+    public void consultar_propostas_vazio() {
 
         final String cpf = randomNumeric(11);
         final Integer pagina = nextInt();
@@ -101,7 +102,7 @@ public class PropostaFuncaoServiceTest {
         final OrdenacaoConsultaPropostas ordenacao = aleatorio(OrdenacaoConsultaPropostas.values());
 
         doThrow(BusinessErrorException.class).when(propostaFuncaoClient)
-            .consultarPropostasPaginadas(any(ConsultarPropostasPaginadasRequestDTO.class));
+            .consultarPropostasPaginadas(any(ConsultarPropostasPaginadasRequest.class));
 
         final ConsultarPropostasResponse response = service
             .consultarPropostasPaginadas(cpf, pagina, quantidade, ordenacao);
@@ -111,7 +112,7 @@ public class PropostaFuncaoServiceTest {
             .consultarPropostasPaginadas(consultarPropostasPaginadasRequestArgumentCaptor.capture());
 
         assertTrue(response.getPropostas().isEmpty());
-        final ConsultarPropostasPaginadasRequestDTO actual = consultarPropostasPaginadasRequestArgumentCaptor.getValue();
+        final ConsultarPropostasPaginadasRequest actual = consultarPropostasPaginadasRequestArgumentCaptor.getValue();
         assertEquals(actual.getOrdenacao().getTipoOrdenacao(), ordenacao.getValor().getTipoOrdenacao());
         assertEquals(actual.getOrdenacao().getCampoOrdenacao(), ordenacao.getValor().getCampoOrdenacao());
         assertEquals(actual.getPaginacao().getNumeroPagina(), pagina);
